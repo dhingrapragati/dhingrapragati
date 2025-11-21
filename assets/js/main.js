@@ -1,7 +1,7 @@
 /**
-* Template Name: Grandoria
-* Template URL: https://bootstrapmade.com/grandoria-bootstrap-hotel-template/
-* Updated: Jul 29 2025 with Bootstrap v5.3.7
+* Template Name: Amoeba
+* Template URL: https://bootstrapmade.com/free-one-page-bootstrap-template-amoeba/
+* Updated: Aug 07 2024 with Bootstrap v5.3.3
 * Author: BootstrapMade.com
 * License: https://bootstrapmade.com/license/
 */
@@ -32,9 +32,7 @@
     mobileNavToggleBtn.classList.toggle('bi-list');
     mobileNavToggleBtn.classList.toggle('bi-x');
   }
-  if (mobileNavToggleBtn) {
-    mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
-  }
+  mobileNavToggleBtn.addEventListener('click', mobileNavToogle);
 
   /**
    * Hide mobile nav on same-page/hash links
@@ -105,48 +103,6 @@
   window.addEventListener('load', aosInit);
 
   /**
-   * Initiate Pure Counter
-   */
-  new PureCounter();
-
-  /**
-   * Countdown timer
-   */
-  function updateCountDown(countDownItem) {
-    const timeleft = new Date(countDownItem.getAttribute('data-count')).getTime() - new Date().getTime();
-
-    const days = Math.floor(timeleft / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((timeleft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((timeleft % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((timeleft % (1000 * 60)) / 1000);
-
-    const daysElement = countDownItem.querySelector('.count-days');
-    const hoursElement = countDownItem.querySelector('.count-hours');
-    const minutesElement = countDownItem.querySelector('.count-minutes');
-    const secondsElement = countDownItem.querySelector('.count-seconds');
-
-    if (daysElement) daysElement.innerHTML = days;
-    if (hoursElement) hoursElement.innerHTML = hours;
-    if (minutesElement) minutesElement.innerHTML = minutes;
-    if (secondsElement) secondsElement.innerHTML = seconds;
-
-  }
-
-  document.querySelectorAll('.countdown').forEach(function(countDownItem) {
-    updateCountDown(countDownItem);
-    setInterval(function() {
-      updateCountDown(countDownItem);
-    }, 1000);
-  });
-
-  /**
-   * Initiate glightbox
-   */
-  const glightbox = GLightbox({
-    selector: '.glightbox'
-  });
-
-  /**
    * Init swiper sliders
    */
   function initSwiper() {
@@ -164,6 +120,13 @@
   }
 
   window.addEventListener("load", initSwiper);
+
+  /**
+   * Initiate glightbox
+   */
+  const glightbox = GLightbox({
+    selector: '.glightbox'
+  });
 
   /**
    * Init isotope layout and filters
@@ -197,5 +160,54 @@
     });
 
   });
+
+  /**
+   * Frequently Asked Questions Toggle
+   */
+  document.querySelectorAll('.faq-item h3, .faq-item .faq-toggle').forEach((faqItem) => {
+    faqItem.addEventListener('click', () => {
+      faqItem.parentNode.classList.toggle('faq-active');
+    });
+  });
+
+  /**
+   * Correct scrolling position upon page load for URLs containing hash links.
+   */
+  window.addEventListener('load', function(e) {
+    if (window.location.hash) {
+      if (document.querySelector(window.location.hash)) {
+        setTimeout(() => {
+          let section = document.querySelector(window.location.hash);
+          let scrollMarginTop = getComputedStyle(section).scrollMarginTop;
+          window.scrollTo({
+            top: section.offsetTop - parseInt(scrollMarginTop),
+            behavior: 'smooth'
+          });
+        }, 100);
+      }
+    }
+  });
+
+  /**
+   * Navmenu Scrollspy
+   */
+  let navmenulinks = document.querySelectorAll('.navmenu a');
+
+  function navmenuScrollspy() {
+    navmenulinks.forEach(navmenulink => {
+      if (!navmenulink.hash) return;
+      let section = document.querySelector(navmenulink.hash);
+      if (!section) return;
+      let position = window.scrollY + 200;
+      if (position >= section.offsetTop && position <= (section.offsetTop + section.offsetHeight)) {
+        document.querySelectorAll('.navmenu a.active').forEach(link => link.classList.remove('active'));
+        navmenulink.classList.add('active');
+      } else {
+        navmenulink.classList.remove('active');
+      }
+    })
+  }
+  window.addEventListener('load', navmenuScrollspy);
+  document.addEventListener('scroll', navmenuScrollspy);
 
 })();
